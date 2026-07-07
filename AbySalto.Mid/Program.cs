@@ -1,6 +1,7 @@
 
 using AbySalto.Mid.Application;
 using AbySalto.Mid.Infrastructure;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace AbySalto.Mid
 {
@@ -10,6 +11,7 @@ namespace AbySalto.Mid
         {
             var builder = WebApplication.CreateBuilder(args);
 
+
             builder.Services
                 .AddPresentation()
                 .AddApplication()
@@ -17,6 +19,8 @@ namespace AbySalto.Mid
 
             builder.Services.AddControllers();
             builder.Services.AddOpenApi();
+
+            builder.Services.AddMemoryCache();
 
             var app = builder.Build();
 
@@ -33,10 +37,16 @@ namespace AbySalto.Mid
 
             app.UseHttpsRedirection();
 
+            app.UseCors((policyBuilder) =>
+            {
+                policyBuilder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+            });
+
             app.UseAuthorization();
 
-
             app.MapControllers();
+
+            
 
             app.Run();
         }
