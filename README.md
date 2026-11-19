@@ -62,6 +62,7 @@ To migrate manually instead: `dotnet ef database update -p AbySalto.Mid.Infrastr
 | `Jwt:Issuer`, `Jwt:Audience`, `Jwt:ExpiryMinutes` | `appsettings.json` | no |
 | `Jwt:Key` | user-secrets (dev), env var `Jwt__Key` (prod) | **yes** |
 | `Basket:MaxDistinctProducts` (default 50, 1–500), `Basket:MaxQuantity` (default 99, 1–10000) | optional; `appsettings.json` or env var (`Basket__MaxQuantity`) | no |
+| `RateLimiting:Auth:PermitLimit` (default 10), `RateLimiting:Auth:WindowSeconds` (default 60): login/register attempts per client IP | optional; `appsettings.json` or env var | no |
 
 Any setting can be overridden by an environment variable, using `__` for nesting.
 
@@ -161,6 +162,7 @@ Every error is RFC 7807 problem JSON with a human-readable `detail`, a machine-r
 | 403 | `auth.forbidden` | authenticated but not allowed | |
 | 404 | `product.not_found` / `basket.item_not_found` / `favorite.not_found` / `auth.user_not_found` | | `productId` |
 | 409 | `auth.email_taken` / `basket.concurrent_update` | duplicate email / two edits of one basket at once | |
+| 429 | `auth.rate_limited` | too many login/register attempts from one IP (fixed window); also sets `Retry-After` | `retryAfterSeconds` |
 | 503 | `product.catalog_unavailable` | DummyJSON down or timing out | |
 | 500 | `server_error` | anything unexpected; details are only in the log (look up the `traceId`) | |
 

@@ -40,6 +40,7 @@ namespace AbySalto.Mid
             services.AddExceptionHandler<ApiExceptionHandler>();
 
             services.AddJwtAuthentication();
+            services.AddAuthRateLimiting();
 
             return services;
         }

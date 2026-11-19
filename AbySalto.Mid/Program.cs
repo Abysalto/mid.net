@@ -36,6 +36,8 @@ namespace AbySalto.Mid
 
             app.UseHttpsRedirection();
 
+            app.UseRateLimiter();
+
             app.UseAuthentication();
             app.UseAuthorization();
 

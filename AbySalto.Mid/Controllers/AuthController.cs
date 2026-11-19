@@ -1,7 +1,9 @@
 using AbySalto.Mid.Application.Auth;
 using AbySalto.Mid.Application.Auth.Dtos;
 using Microsoft.AspNetCore.Authorization;
+using AbySalto.Mid.Auth;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace AbySalto.Mid.Controllers
 {
@@ -10,7 +12,9 @@ namespace AbySalto.Mid.Controllers
     public class AuthController(IAuthService authService) : ControllerBase
     {
         [HttpPost("register")]
+        [EnableRateLimiting(AuthRateLimiting.PolicyName)]
         [ProducesResponseType<AuthResponse>(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<ActionResult<AuthResponse>> Register(RegisterRequest request, CancellationToken cancellationToken)
@@ -20,7 +24,9 @@ namespace AbySalto.Mid.Controllers
         }
 
         [HttpPost("login")]
+        [EnableRateLimiting(AuthRateLimiting.PolicyName)]
         [ProducesResponseType<AuthResponse>(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<AuthResponse>> Login(LoginRequest request, CancellationToken cancellationToken)
             => Ok(await authService.LoginAsync(request, cancellationToken));
