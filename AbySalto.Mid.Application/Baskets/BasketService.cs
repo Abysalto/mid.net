@@ -131,6 +131,8 @@ internal sealed class BasketService(
         }
         catch (DbUpdateException ex)
         {
+            // With product text fitted to the columns (ProductSnapshot), the remaining cause is a unique index:
+            // two first adds both creating the basket, or the same product added twice at once.
             throw new ConflictException(
                 "Your basket was changed by another request at the same time. Try again.", ex, "basket.concurrent_update");
         }

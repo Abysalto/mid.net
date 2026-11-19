@@ -28,8 +28,8 @@ public class BasketItem
         EnsureValidQuantity(quantity, maxQuantity);
 
         ProductId = productId;
-        ProductTitle = title;
-        Thumbnail = thumbnail;
+        ProductTitle = ProductSnapshot.Title(title);
+        Thumbnail = ProductSnapshot.Thumbnail(thumbnail);
         Category = category;
         UnitPrice = unitPrice;
         Quantity = quantity;

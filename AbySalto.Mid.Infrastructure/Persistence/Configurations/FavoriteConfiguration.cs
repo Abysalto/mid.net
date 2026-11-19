@@ -12,8 +12,8 @@ internal sealed class FavoriteConfiguration : IEntityTypeConfiguration<Favorite>
 
         builder.HasKey(f => new { f.UserId, f.ProductId });
 
-        builder.Property(f => f.ProductTitle).HasMaxLength(256).IsRequired();
-        builder.Property(f => f.Thumbnail).HasMaxLength(1024);
+        builder.Property(f => f.ProductTitle).HasMaxLength(ProductSnapshot.MaxTitleLength).IsRequired();
+        builder.Property(f => f.Thumbnail).HasMaxLength(ProductSnapshot.MaxThumbnailLength);
         builder.Property(f => f.CreatedAt).IsRequired();
 
         builder.Property(f => f.Category).HasConversion<string>().HasMaxLength(64);

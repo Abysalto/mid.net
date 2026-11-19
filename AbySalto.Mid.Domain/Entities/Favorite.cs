@@ -17,8 +17,8 @@ public class Favorite
     {
         UserId = userId;
         ProductId = productId;
-        ProductTitle = productTitle;
-        Thumbnail = thumbnail;
+        ProductTitle = ProductSnapshot.Title(productTitle);
+        Thumbnail = ProductSnapshot.Thumbnail(thumbnail);
         Category = category;
         CreatedAt = createdAt;
     }

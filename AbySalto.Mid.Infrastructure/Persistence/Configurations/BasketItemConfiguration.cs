@@ -14,8 +14,8 @@ internal sealed class BasketItemConfiguration : IEntityTypeConfiguration<BasketI
 
         builder.HasIndex(i => new { i.BasketId, i.ProductId }).IsUnique();
 
-        builder.Property(i => i.ProductTitle).HasMaxLength(256).IsRequired();
-        builder.Property(i => i.Thumbnail).HasMaxLength(1024);
+        builder.Property(i => i.ProductTitle).HasMaxLength(ProductSnapshot.MaxTitleLength).IsRequired();
+        builder.Property(i => i.Thumbnail).HasMaxLength(ProductSnapshot.MaxThumbnailLength);
         builder.Property(i => i.UnitPrice).HasPrecision(18, 2);
         builder.Property(i => i.AddedAt).IsRequired();
 

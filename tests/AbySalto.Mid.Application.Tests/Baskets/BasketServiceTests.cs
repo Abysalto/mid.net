@@ -36,6 +36,20 @@ public class BasketServiceTests
             .Returns(new ProductDto(id, $"Product {id}", "desc", ProductCategory.Beauty, null, price, 0m, 4.5m, stock, $"thumb{id}", []));
 
     [Fact]
+    public async Task Product_text_that_would_not_fit_the_columns_is_fitted_instead_of_failing_the_save()
+    {
+        _products.GetProductByIdAsync(7, Arg.Any<CancellationToken>())
+            .Returns(new ProductDto(7, new string('x', 300), "desc", ProductCategory.Beauty, null, 1m, 0m, 4m, 5,
+                "https://cdn.test/" + new string('a', 1100), []));
+
+        var item = Assert.Single((await _sut.AddItemAsync(new AddBasketItemRequest(7, 1))).Items);
+
+        Assert.Equal(ProductSnapshot.MaxTitleLength, item.Title.Length);
+        Assert.EndsWith("…", item.Title);
+        Assert.Null(item.Thumbnail);
+    }
+
+    [Fact]
     public async Task Get_without_a_basket_returns_an_empty_one_and_creates_nothing()
     {
         var basket = await _sut.GetAsync();
