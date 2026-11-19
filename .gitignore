@@ -398,3 +398,12 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Local secrets (docker-compose SA password)
+.env
+
+# JetBrains Rider project folder
+.idea
+
+# Local Claude Code settings
+.claude/

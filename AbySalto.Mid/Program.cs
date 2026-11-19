@@ -1,24 +1,27 @@
-
 using AbySalto.Mid.Application;
 using AbySalto.Mid.Infrastructure;
+using AbySalto.Mid.Infrastructure.Persistence;
 
 namespace AbySalto.Mid
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services
                 .AddPresentation()
-                .AddApplication()
+                .AddApplication(builder.Configuration)
                 .AddInfrastructure(builder.Configuration);
 
-            builder.Services.AddControllers();
-            builder.Services.AddOpenApi();
-
             var app = builder.Build();
+
+            if (app.Configuration.GetValue<bool>("Database:MigrateOnStartup"))
+                await app.Services.InitializeDatabaseAsync();
+            
+
+            app.UseExceptionHandler();
 
             if (app.Environment.IsDevelopment())
             {
@@ -26,19 +29,21 @@ namespace AbySalto.Mid
                 app.UseSwagger();
                 app.UseSwaggerUI(options =>
                 {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Desk Link");
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "AbySalto");
                     options.RoutePrefix = string.Empty;
                 });
             }
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            app.UseRateLimiter();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.MapControllers();
 
-            app.Run();
+            await app.RunAsync();
         }
     }
 }
