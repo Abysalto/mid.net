@@ -1,6 +1,3 @@
-namespace DefaultNamespace;
+namespace AbySalto.Mid.Application.Baskets.Dtos;
 
-public class BasketDto
-{
-    
-}
+public record BasketDto(IReadOnlyList<BasketItemDto> Items, int TotalItems, decimal TotalPrice);

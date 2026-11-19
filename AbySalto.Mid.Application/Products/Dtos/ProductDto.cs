@@ -1,6 +1,16 @@
-namespace DefaultNamespace;
+using AbySalto.Mid.Domain.Enums;
 
-public class ProductDto
-{
-    
-}
+namespace AbySalto.Mid.Application.Products.Dtos;
+
+public record ProductDto(
+    int Id,
+    string Title,
+    string Description,
+    ProductCategory Category,
+    string? Brand,
+    decimal Price,
+    decimal DiscountPercentage,
+    decimal Rating,
+    int Stock,
+    string? Thumbnail,
+    IReadOnlyList<string> Images);

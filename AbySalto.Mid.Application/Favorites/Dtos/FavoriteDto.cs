@@ -1,6 +1,5 @@
-namespace DefaultNamespace;
+using AbySalto.Mid.Domain.Enums;
 
-public class FavoritesDto
-{
-    
-}
+namespace AbySalto.Mid.Application.Favorites.Dtos;
+
+public record FavoriteDto(int ProductId, string Title, string? Thumbnail, ProductCategory Category, DateTime AddedAt);

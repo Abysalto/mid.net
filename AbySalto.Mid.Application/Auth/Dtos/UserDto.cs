@@ -1,6 +1,3 @@
-namespace DefaultNamespace;
+namespace AbySalto.Mid.Application.Auth.Dtos;
 
-public class UserDto
-{
-    
-}
+public record UserDto(string Email, string Username, DateTime CreatedAt);
